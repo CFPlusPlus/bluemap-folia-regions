@@ -12,7 +12,6 @@ import io.papermc.paper.threadedregions.TickRegions;
 import io.papermc.paper.threadedregions.TickRegions.TickRegionData;
 import io.papermc.paper.threadedregions.TickRegions.TickRegionSectionData;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
-import io.papermc.paper.util.CoordinateUtils;
 import net.minecraft.world.level.ChunkPos;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -112,8 +111,8 @@ public class BlueMapFoliaRegionsPlugin extends JavaPlugin {
     private static List<Vector2d> getPolygonPoints(List<Long> chunkPositions) {
         List<Vector2d> points = new ArrayList<>();
         for (long chunkPos : chunkPositions) {
-            int x = CoordinateUtils.getChunkX(chunkPos);
-            int z = CoordinateUtils.getChunkZ(chunkPos);
+            int x = getChunkX(chunkPos);
+            int z = getChunkZ(chunkPos);
             points.add(Vector2d.from(x * 16, z * 16));
             points.add(Vector2d.from(x * 16 + 15, z * 16));
             points.add(Vector2d.from(x * 16, z * 16 + 15));
@@ -187,4 +186,14 @@ public class BlueMapFoliaRegionsPlugin extends JavaPlugin {
     private static double crossProduct(Vector2d a, Vector2d b, Vector2d c) {
         return (b.getX() - a.getX()) * (c.getY() - a.getY()) - (b.getY() - a.getY()) * (c.getX() - a.getX());
     }
+
+    private static int getChunkX(long chunkKey) {
+    // entspricht dem alten CoordinateUtils.getChunkX(chunkKey)
+    return (int) chunkKey;
+}
+
+private static int getChunkZ(long chunkKey) {
+    // entspricht dem alten CoordinateUtils.getChunkZ(chunkKey)
+    return (int) (chunkKey >> 32);
+}
 }
