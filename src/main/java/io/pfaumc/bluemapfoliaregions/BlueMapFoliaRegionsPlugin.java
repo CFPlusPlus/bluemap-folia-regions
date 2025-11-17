@@ -48,14 +48,39 @@ public class BlueMapFoliaRegionsPlugin extends JavaPlugin {
     }
 
     private void updateRegionMarkets(BlueMapMap map) {
-        MarkerSet markerSet = MarkerSet.builder().label("Folia Regions").defaultHidden(true).toggleable(true).build();
+        MarkerSet markerSet = MarkerSet.builder()
+                .label("Folia Regions")
+                .defaultHidden(true)
+                .toggleable(true)
+                .build();
+
         String id = map.getWorld().getId();
-        World world = Bukkit.getWorld(UUID.fromString(id));
+        World world = null;
+
+        // Neues BlueMap: IDs wie "weltname#minecraft:overworld"
+        int hashIndex = id.indexOf('#');
+        if (hashIndex != -1) {
+            // Teil vor dem '#' ist bei deinen Beispielen der echte Weltname
+            String worldName = id.substring(0, hashIndex);
+            world = Bukkit.getWorld(worldName);
+        } else {
+            // Fallback: evtl. alte UUID- oder reine Name-IDs
+            try {
+                UUID uuid = UUID.fromString(id);
+                world = Bukkit.getWorld(uuid);
+            } catch (IllegalArgumentException ignored) {
+                world = Bukkit.getWorld(id);
+            }
+        }
+
         if (world == null) {
-            getLogger().warning("World not found: " + id);
+            getLogger().warning("World not found for BlueMap world id: " + id);
             return;
         }
-        ThreadedRegionizer<TickRegionData, TickRegionSectionData> regioniser = ((CraftWorld) world).getHandle().regioniser;
+
+        ThreadedRegionizer<TickRegionData, TickRegionSectionData> regioniser =
+                ((CraftWorld) world).getHandle().regioniser;
+
         Map<String, ShapeMarker> markers = createMarkers(regioniser);
         markerSet.getMarkers().putAll(markers);
         map.getMarkerSets().put("folia-regions", markerSet);
