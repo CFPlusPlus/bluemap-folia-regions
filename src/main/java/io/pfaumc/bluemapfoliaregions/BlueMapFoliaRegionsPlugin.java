@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.plugin.java.JavaPlugin;
+import de.bluecolored.bluemap.api.math.Color;
 
 import java.util.*;
 
@@ -49,7 +50,7 @@ public class BlueMapFoliaRegionsPlugin extends JavaPlugin {
 
     private void updateRegionMarkets(BlueMapMap map) {
         MarkerSet markerSet = MarkerSet.builder()
-                .label("Folia Regions")
+                .label("Folia Tick-Regionen")
                 .defaultHidden(true)
                 .toggleable(true)
                 .build();
@@ -106,14 +107,17 @@ public class BlueMapFoliaRegionsPlugin extends JavaPlugin {
 
             TickRegions.RegionStats stats = region.getData().getRegionStats();
 
-            String detail = "Sections: " + sections.size() + "\n" +
-                "Chunks: " + stats.getChunkCount() + "\n" +
-                "Entities: " + stats.getEntityCount() + "\n" +
-                "Players: " + stats.getPlayerCount() + "\n";
+            String detail =
+                    "Sektionen: " + sections.size() + "<br>" +
+                    "Chunks: " + stats.getChunkCount() + "<br>" +
+                    "Entitäten: " + stats.getEntityCount() + "<br>" +
+                    "Spieler: " + stats.getPlayerCount();
 
             ShapeMarker marker = ShapeMarker.builder()
                 .shape(shape, 80)
                 .label(label)
+                .lineColor(new Color(155, 70, 255, 1.0f))
+                .fillColor(new Color(210, 170, 255, 0.35f))
                 .depthTestEnabled(false)
                 .build();
             marker.setDetail(detail);
