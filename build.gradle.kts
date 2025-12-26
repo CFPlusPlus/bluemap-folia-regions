@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.foliaDevBundle("1.21.8-R0.1-SNAPSHOT")
+    paperweight.foliaDevBundle("1.21.11-R0.1-SNAPSHOT")
     compileOnly("de.bluecolored.bluemap:BlueMapAPI:2.7.1")
 }
 
