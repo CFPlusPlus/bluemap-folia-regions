@@ -19,7 +19,8 @@ repositories {
 }
 
 dependencies {
-    paperweight.foliaDevBundle("1.21.11-R0.1-SNAPSHOT")
+    val paperVersion = project.properties["paper.version"].toString()
+    paperweight.foliaDevBundle(paperVersion)
     compileOnly("de.bluecolored.bluemap:BlueMapAPI:2.7.1")
 }
 
@@ -46,7 +47,8 @@ tasks {
 runPaper {
     folia {
         registerTask {
-            serverJar(file("run/folia-paperclip-1.21.8-R0.1-SNAPSHOT-mojmap.jar"))
+            val paperVersion = project.properties["paper.version"].toString()
+            serverJar(file("run/folia-paperclip-${paperVersion}-mojmap.jar"))
         }
     }
 }
